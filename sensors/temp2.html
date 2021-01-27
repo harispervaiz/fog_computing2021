@@ -1,0 +1,219 @@
+<html>
+<head>
+    <title>Fog Computing Assignment</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+
+        <div class="col">
+            <div class="weather-card one">
+
+                <div class="bottom">
+                    <div class="wrapper">
+                        <ul class="forecast">
+
+                            <li class="active">
+                                <span class="date">Temperature</span>
+                                <span class="lnr lnr-sun condition">
+									<span class="temp"><span class="status"></span><span class="deg">0</span><span class="temp-type">C</span></span>
+								</span>
+                            </li>
+                            <li class="active">
+
+                                <span class="date">Connection</span>
+                                <span style="float:right">
+									<span class="temp"><span id="i_status" ></span></span>
+								</span>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="top">
+                    <div class="wrapper">
+
+                        <p class="temp">
+                            <span class="temp-value"><span id="update">--</span></span>
+                            <span class="deg">0</span>
+                            <a href="javascript:;"><span class="temp-type">C</span></a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bottom">
+                    <input type="number" class="form-control" name="temperature" id="temperature" autocomplete="off" style="width:255px;float:left">
+                    <button type="button" class="btn btn-info" id="submit" style="float:right">Update</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+</script>
+<script src="js/jquery.js" ></script>
+
+<script src="js/popper.min.js" ></script>
+
+<script src="js/bootstrap.min.js" ></script>
+
+<script type="text/javascript">
+
+
+    function checkInternet(){
+
+        if(navigator.onLine){
+            // alert('online');
+            $("#i_status").css("color","green");
+            $("#i_status").html("Online");
+
+            if(localStorage.getItem("data")){
+                sendCachedData();
+            }
+                return true;
+        }
+
+        $("#i_status").css("color","red");
+        $("#i_status").html("Offline");
+        // saveDataLocally(temperature);
+        return false;
+
+
+    }
+
+
+    function sendCachedData(){
+
+        let data = JSON.parse(localStorage.getItem("data"));
+
+        for(i=0; i<data.length; i++){
+            sendData(data[i].temperature,data[i].datetime)
+        }
+        $(".status").html(data[data.length - 1].temperature );
+        localStorage.clear();
+
+    }
+
+    function sendData(temperature, datetime){
+        $.ajax({
+            type: "POST",
+            cache: false,
+            url: 'update.php',
+            data: {temperature: temperature, datetime: datetime},
+            success: function(data) {
+
+                // alert('data has been stored to database');
+                return true
+            }
+        });
+    }
+
+    function randomInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function saveDataLocally(temperature){
+        if(!checkInternet()){
+            let datetime = new Date();
+
+            let month = datetime.getMonth()+1;
+            let day = datetime.getDate();
+            let hour = datetime.getHours();
+            let minute = datetime.getMinutes();
+            let second = datetime.getSeconds();
+
+            let output = datetime.getFullYear() + '-' +
+                ((''+month).length<2 ? '0' : '') + month + '-' +
+                ((''+day).length<2 ? '0' : '') + day + ' ' +
+                ((''+hour).length<2 ? '0' :'') + hour + ':' +
+                ((''+minute).length<2 ? '0' :'') + minute + ':' +
+                ((''+second).length<2 ? '0' :'') + second;
+
+            datetime = output;
+
+            let existingEntries = JSON.parse(localStorage.getItem("data"));
+            if(existingEntries == null) existing_data = [];
+
+            let data = {
+                "temperature": temperature,
+                "datetime": datetime
+            };
+            existing_data.push(data);
+            localStorage.setItem("data", JSON.stringify(existing_data));
+        }
+    }
+
+    $(document).ready(function() {
+
+        var temperature = '';
+        let update = document.getElementById("update");
+        setInterval(() => update.innerHTML = Math.floor(temperature = randomInteger(5,10)), 5000);
+        setInterval(checkInternet(), 1000);
+
+
+        // 5 * 1000 ms = 5 seconds   ----------------------------------------^^^^
+
+
+        $('#submit').click(function() {
+
+            let temperature = $('#temperature').val();
+
+            let datetime = new Date();
+
+            let month = datetime.getMonth()+1;
+            let day = datetime.getDate();
+            let hour = datetime.getHours();
+            let minute = datetime.getMinutes();
+            let second = datetime.getSeconds();
+
+            let output = datetime.getFullYear() + '-' +
+                ((''+month).length<2 ? '0' : '') + month + '-' +
+                ((''+day).length<2 ? '0' : '') + day + ' ' +
+                ((''+hour).length<2 ? '0' :'') + hour + ':' +
+                ((''+minute).length<2 ? '0' :'') + minute + ':' +
+                ((''+second).length<2 ? '0' :'') + second;
+
+            datetime = output;
+
+            if(navigator.onLine){
+                $(".status").html(temperature);
+                let send = sendData(temperature,datetime);
+
+
+            }else{
+
+                $(".status").html(temperature);
+
+                let existingEntries = JSON.parse(localStorage.getItem("data"));
+                if(existingEntries == null) existing_data = [];
+
+                let data = {
+                    "temperature": temperature,
+                    "datetime": datetime
+                };
+
+
+                existing_data.push(data);
+                localStorage.setItem("data", JSON.stringify(existing_data));
+
+            }
+
+        });
+
+
+
+
+
+    });
+</script>
+
+</body>
+</html>
