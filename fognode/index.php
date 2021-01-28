@@ -2,7 +2,7 @@
 
 include_once __DIR__ . '/../database/connection.php';
 
-$sql = "select * from data";
+$sql = "select * from data LIMIT 20";
 $query = mysqli_query($db_conx, $sql) or die("Error at query " . $sql . '-- ' . mysqli_errno($db_conx));;
 $data = array();
 if(mysqli_num_rows($query) > 0){ 
