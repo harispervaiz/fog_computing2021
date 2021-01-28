@@ -3,10 +3,10 @@ var router = express.Router();
 var axios = require('axios');
 
 /* GET home page.*/
-router.get('/', async function(req, res, next) {
-  await res.render('index', { title: 'Weather Stats'});
-  await fetchDataFromFog();
-  runFetchData();
+router.get('/',  function(req, res) {
+   res.render('index', { title: 'Weather Stats'});
+   fetchDataFromFog()
+   runFetchData();
 });
 
 ////////////////////////////////////////////
@@ -43,6 +43,7 @@ function sendDataToBrowser(data){
 //
 ////////////////////////////////////////////
 async function fetchDataFromFog(){
+  await sleep(1000)
   console.log("Fetching Data from Cloud Server")
   var config = {
     method: 'get',
@@ -56,15 +57,15 @@ async function fetchDataFromFog(){
 
       })
       .catch(function (error) {
-        console.log("Could not fetch data from Server, Server is offline");
-        sendDataToBrowser("Server offline");
+        console.log("Could not fetch data from Cloud Server, Server is offline");
+        sendDataToBrowser("Cloud Server offline");
       });
 }
 
 async function runFetchData(){
-    await sleep(10000)
-      await fetchDataFromFog();
-      await runFetchData();
+    await sleep(9000)
+    await fetchDataFromFog();
+    runFetchData();
 }
 
 function sleep(ms) {

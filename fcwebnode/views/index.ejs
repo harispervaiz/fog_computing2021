@@ -10,26 +10,31 @@
     <div id="content">
       <h2>Weather Statistics</h2>
       <div id="currentTempContainer">
-
         <div id="offlineBox">
-          <h4 id="offline">OFFLINE</h4>
+          <h4 id="offline">SERVER OFFLINE</h4>
           <p>
-            The current temperature cannot be displayed<br>
+            New Data can not be fetched
             while the server is offline.<br>
+            New data will be displayed
+            as soon as <br>the Server is online again.
           </p>
         </div>
-
           <div id="onlineBox">
-            <h5>Current Temperature: </h5>
-            <p id="temp1"> </p>
-            <p id="temp2"></p>
+            <h4>ONLINE</h4>
+            <p>While the Server is online, new Data <br>will be fetched and displayed every 10s</p>
           </div>
       </div>
-
-    <canvas id="chart" width="400" height="400"></canvas>
-      <canvas id="bar" width="400" height="400"></canvas>
+      <div class="graphs">
+        <canvas id="chart" width="400" height="400"></canvas>
+      </div>
+      <div class="graphs">
+        <canvas id="chart2" width="400" height="400"></canvas>
+      </div>
+      <div class="graphs">
+        <h4>On- & Offline Time of Cloud Server:</h4>
+        <canvas id="bar" width="400" height="400"></canvas>
+      </div>
     </div>
-
     <script src='/javascripts/main.js'></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </body>
