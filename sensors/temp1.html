@@ -108,7 +108,7 @@
         $.ajax({
             type: "POST",
             cache: false,
-            url: 'update.php',
+            url: 'http://3.125.69.91/fog_computing2021/sensors/update.php',
             data: {temperature: temperature, datetime: datetime, status: status, name: name},
             success: function(data) {
                 // alert('data has been stored to database');

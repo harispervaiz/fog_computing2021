@@ -1,5 +1,6 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
 include_once __DIR__ . '/../database/connection.php';
 
 if (isset($_POST['temperature']) && isset($_POST['datetime']) && isset($_POST['status']) && isset($_POST['name'])) {
