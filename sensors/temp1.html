@@ -2,7 +2,6 @@
 <head>
     <title>Fog Computing Assignment</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -66,8 +65,8 @@
 <script src="js/bootstrap.min.js" ></script>
 
 <script type="text/javascript">
-
-
+    var temperature = '';
+    var name = 'sensor1';
     function checkInternet(){
 
         if(navigator.onLine){
@@ -75,16 +74,18 @@
             $("#i_status").css("color","green");
             $("#i_status").html("Online");
 
+            sendData(temperature,getDateTime(),1,name);//temperature,datetime,status,name
+
             if(localStorage.getItem("data")){
                 sendCachedData();
+                localStorage.clear();
             }
-                return true;
-        }
 
-        $("#i_status").css("color","red");
-        $("#i_status").html("Offline");
-        // saveDataLocally(temperature);
-        return false;
+        }else{
+            $("#i_status").css("color","red");
+            $("#i_status").html("Offline");
+            saveDataLocally();
+        }
 
 
     }
@@ -95,69 +96,78 @@
         let data = JSON.parse(localStorage.getItem("data"));
 
         for(i=0; i<data.length; i++){
-            sendData(data[i].temperature,data[i].datetime)
+            sendData(data[i].temperature,data[i].datetime,data[i].status,data[i].name)
         }
         $(".status").html(data[data.length - 1].temperature );
-        localStorage.clear();
+
 
     }
 
-    function sendData(temperature, datetime){
+    function sendData(temperature, datetime, status, name){
+
         $.ajax({
             type: "POST",
             cache: false,
             url: 'update.php',
-            data: {temperature: temperature, datetime: datetime},
+            data: {temperature: temperature, datetime: datetime, status: status, name: name},
             success: function(data) {
-
                 // alert('data has been stored to database');
                 return true
-            }
+            },
+            error: function(result) {
+                  
+                }
         });
     }
 
     function randomInteger(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+         temperature = Math.floor(Math.random() * (max - min + 1)) + min;
+        return temperature;
     }
 
-    function saveDataLocally(temperature){
-        if(!checkInternet()){
-            let datetime = new Date();
+    function getDateTime(){
+        let datetime = new Date();
 
-            let month = datetime.getMonth()+1;
-            let day = datetime.getDate();
-            let hour = datetime.getHours();
-            let minute = datetime.getMinutes();
-            let second = datetime.getSeconds();
+        let month = datetime.getMonth()+1;
+        let day = datetime.getDate();
+        let hour = datetime.getHours();
+        let minute = datetime.getMinutes();
+        let second = datetime.getSeconds();
 
-            let output = datetime.getFullYear() + '-' +
-                ((''+month).length<2 ? '0' : '') + month + '-' +
-                ((''+day).length<2 ? '0' : '') + day + ' ' +
-                ((''+hour).length<2 ? '0' :'') + hour + ':' +
-                ((''+minute).length<2 ? '0' :'') + minute + ':' +
-                ((''+second).length<2 ? '0' :'') + second;
+        let output = datetime.getFullYear() + '-' +
+            ((''+month).length<2 ? '0' : '') + month + '-' +
+            ((''+day).length<2 ? '0' : '') + day + ' ' +
+            ((''+hour).length<2 ? '0' :'') + hour + ':' +
+            ((''+minute).length<2 ? '0' :'') + minute + ':' +
+            ((''+second).length<2 ? '0' :'') + second;
 
-            datetime = output;
+        return output;
+    }
 
-            let existingEntries = JSON.parse(localStorage.getItem("data"));
-            if(existingEntries == null) existing_data = [];
+    function saveDataLocally(){
+
+
+            datetime = getDateTime();
+
+            let existing_data = JSON.parse(localStorage.getItem("data"));
+            if(existing_data == null) {existing_data = []};
 
             let data = {
                 "temperature": temperature,
-                "datetime": datetime
+                "datetime": datetime,
+                "status" : 0,
+                "name" : name
             };
             existing_data.push(data);
             localStorage.setItem("data", JSON.stringify(existing_data));
-        }
+
     }
 
     $(document).ready(function() {
 
-        var temperature = '';
         let update = document.getElementById("update");
-        setInterval(() => update.innerHTML = Math.floor(temperature = randomInteger(5,10)), 5000);
-        setInterval(checkInternet(), 1000);
-
+        setInterval(() => update.innerHTML = Math.floor(randomInteger(5,10)), 5000);
+        setInterval(checkInternet, 5000);
 
         // 5 * 1000 ms = 5 seconds   ----------------------------------------^^^^
 
