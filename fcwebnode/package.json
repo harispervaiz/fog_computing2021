@@ -1,0 +1,25 @@
+{
+  "name": "fcwebnode",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-longpoll": "0.0.6",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "ngrok": "^3.4.0",
+    "websocket": "^1.0.33",
+    "websockets": "^0.2.0",
+    "ws": "^7.4.2"
+  },
+  "devDependencies": {
+    "axios": "^0.21.1",
+    "zeromq": "^6.0.0-beta.6"
+  }
+}
