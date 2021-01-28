@@ -108,20 +108,20 @@
         $.ajax({
             type: "POST",
             cache: false,
-            url: 'update.php',
+            url: 'http://3.125.69.91/fog_computing2021/sensors/update.php',
             data: {temperature: temperature, datetime: datetime, status: status, name: name},
             success: function(data) {
                 // alert('data has been stored to database');
                 return true
             },
             error: function(result) {
-                  
-                }
+
+            }
         });
     }
 
     function randomInteger(min, max) {
-         temperature = Math.floor(Math.random() * (max - min + 1)) + min;
+        temperature = Math.floor(Math.random() * (max - min + 1)) + min;
         return temperature;
     }
 
@@ -147,19 +147,19 @@
     function saveDataLocally(){
 
 
-            datetime = getDateTime();
+        datetime = getDateTime();
 
-            let existing_data = JSON.parse(localStorage.getItem("data"));
-            if(existing_data == null) {existing_data = []};
+        let existing_data = JSON.parse(localStorage.getItem("data"));
+        if(existing_data == null) {existing_data = []};
 
-            let data = {
-                "temperature": temperature,
-                "datetime": datetime,
-                "status" : 0,
-                "name" : name
-            };
-            existing_data.push(data);
-            localStorage.setItem("data", JSON.stringify(existing_data));
+        let data = {
+            "temperature": temperature,
+            "datetime": datetime,
+            "status" : 0,
+            "name" : name
+        };
+        existing_data.push(data);
+        localStorage.setItem("data", JSON.stringify(existing_data));
 
     }
 
