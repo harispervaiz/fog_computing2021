@@ -24,7 +24,6 @@ wss.on('connection', ws => {
     console.log(`Received message => ${message}`)
   })
   browser = ws;
-  ws.send('Hello From Server!')
 })
 
 function sendDataToBrowser(data){

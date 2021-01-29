@@ -18,8 +18,6 @@ connection.onmessage = (e) => {
     if(e.data === "Server offline") {
         console.log("The Server is offline, new data cannot be displayed")
         showOfflinePage()
-    } else if(e.data === "Hello From Server!"){
-        console.log(e.data)
     } else {
         console.log("Received new data from the Cloud Server")
         processData(e.data)
