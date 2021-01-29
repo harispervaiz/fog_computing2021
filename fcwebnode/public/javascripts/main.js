@@ -144,14 +144,12 @@ function processData(data){
         if(keyA > keyB) return 1;
         return 0;
     })
-
     sensor_Two.sort((a,b)=>{
         let keyA = new Date(a.time), keyB = new Date(b.time);
         if(keyA < keyB) return -1;
         if(keyA > keyB) return 1;
         return 0;
     })
-
     drawChart()
     drawBar()
 }
