@@ -15,7 +15,7 @@ connection.onerror = (error) => {
 }
 
 connection.onmessage = (e) => {
-    if(e.data === "Server offline") {
+    if(e.data === "Cloud Server offline") {
         console.log("The Server is offline, new data cannot be displayed")
         showOfflinePage()
     } else {
