@@ -16,38 +16,42 @@
                         <ul class="forecast">
 
                             <li class="active">
-                                <span class="date">Temperature</span>
-                                <span class="lnr lnr-sun condition">
-									<span class="temp"><span class="status"></span><span class="deg">0</span><span class="temp-type">C</span></span>
-								</span>
-                            </li>
-                            <li class="active">
-
                                 <span class="date">Connection</span>
                                 <span style="float:right">
 									<span class="temp"><span id="i_status" ></span></span>
 								</span>
+                            </li>
+                            <li class="active">
+                                <span class="date">Server Response</span>
+                                <span style="float:right">
+									<span class="temp"><span id="server_response"></span></span>
+								</span>
+                            </li>
+
+
+                            <li class="active">
+                                <span class="date">Temperature</span>
+
+
+
+
+                                <span style="float:right">
+
+									<span class="temp-value"><span id="update">--</span></span>
+
+									<span class="deg">&deg;</span><span class="temp-type">C</span></span>
+								</span>
+
 
                             </li>
+
+
                         </ul>
                     </div>
                 </div>
 
-                <div class="top">
-                    <div class="wrapper">
+                <img src="images/temperature.png" height="100px" style="float: right" >
 
-                        <p class="temp">
-                            <span class="temp-value"><span id="update">--</span></span>
-                            <span class="deg">0</span>
-                            <a href="javascript:;"><span class="temp-type">C</span></a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bottom">
-                    <input type="number" class="form-control" name="temperature" id="temperature" autocomplete="off" style="width:255px;float:left">
-                    <button type="button" class="btn btn-info" id="submit" style="float:right">Update</button>
-                </div>
             </div>
         </div>
 
@@ -80,13 +84,12 @@
                 sendCachedData();
                 localStorage.clear();
             }
-
         }else{
             $("#i_status").css("color","red");
             $("#i_status").html("Offline");
             saveDataLocally();
+            sendCachedData();
         }
-
 
     }
 
@@ -107,16 +110,19 @@
 
         $.ajax({
             type: "POST",
-            cache: false,
             url: 'http://3.125.69.91/fog_computing2021/sensors/update.php',
             data: {temperature: temperature, datetime: datetime, status: status, name: name},
             success: function(data) {
-                // alert('data has been stored to database');
-                return true
+                $('#server_response').html(data);
             },
-            error: function(result) {
-                  
+            error: function(
+
+            ) {
+                $('#server_response').html('Fail');
                 }
+        }).fail(function () {
+            $('#server_response').html('Fail');
+
         });
     }
 
@@ -145,8 +151,6 @@
     }
 
     function saveDataLocally(){
-
-
             datetime = getDateTime();
 
             let existing_data = JSON.parse(localStorage.getItem("data"));
@@ -170,56 +174,6 @@
         setInterval(checkInternet, 5000);
 
         // 5 * 1000 ms = 5 seconds   ----------------------------------------^^^^
-
-
-        $('#submit').click(function() {
-
-            let temperature = $('#temperature').val();
-
-            let datetime = new Date();
-
-            let month = datetime.getMonth()+1;
-            let day = datetime.getDate();
-            let hour = datetime.getHours();
-            let minute = datetime.getMinutes();
-            let second = datetime.getSeconds();
-
-            let output = datetime.getFullYear() + '-' +
-                ((''+month).length<2 ? '0' : '') + month + '-' +
-                ((''+day).length<2 ? '0' : '') + day + ' ' +
-                ((''+hour).length<2 ? '0' :'') + hour + ':' +
-                ((''+minute).length<2 ? '0' :'') + minute + ':' +
-                ((''+second).length<2 ? '0' :'') + second;
-
-            datetime = output;
-
-            if(navigator.onLine){
-                $(".status").html(temperature);
-                let send = sendData(temperature,datetime);
-
-
-            }else{
-
-                $(".status").html(temperature);
-
-                let existingEntries = JSON.parse(localStorage.getItem("data"));
-                if(existingEntries == null) existing_data = [];
-
-                let data = {
-                    "temperature": temperature,
-                    "datetime": datetime
-                };
-
-
-                existing_data.push(data);
-                localStorage.setItem("data", JSON.stringify(existing_data));
-
-            }
-
-        });
-
-
-
 
 
     });
