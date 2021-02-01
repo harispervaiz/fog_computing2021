@@ -3,6 +3,7 @@ Our Weather Statistics Fog Application is a simplified tool that collects temper
 
 ### Setup
 Figure 1 displays the Setup of our Weather Statistics Application. The two sensors and the Web Interface are running on local machines, and the instance that stores the simulated data and provides it to the Web Interface is running on a Linux (Ubuntu 18) instance provided by AWS. 
+![Figure 1](https://github.com/harispervaiz/fog_computing2021/blob/main/Setup.png)
 
 ### Two Sensors
 The two sensors are simulating temperature values  from two different locations. They are written in php and js and can be found in the sensors directory of the repository. For visualization we added a frontend, in a real-world scenario one could ommit that to make the edge nodes leaner.
