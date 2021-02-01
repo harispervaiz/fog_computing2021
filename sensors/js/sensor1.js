@@ -39,7 +39,7 @@ function sendData(temperature, datetime, status, name){
 
     $.ajax({
         type: "POST",
-        url: 'http://3.125.69.91/fog_computing2021/sensors/update.php',
+        url: 'http://3.125.69.91/fog_computing2021/fognode/store.php',
         data: {temperature: temperature, datetime: datetime, status: status, name: name},
         success: function(data) {
             $('#server_response').html(data);
