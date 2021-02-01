@@ -1,6 +1,9 @@
 # Fog Computing 2021: Prototyping Assignment
 Our Weather Statistics Fog Application is a simplified tool that collects temperature data from two sensors and displays aggregated statistics of the temperature on a Web Interface. In practice it could be part of a large Fog that collects data from many different locations to generate weather forecasts.
 
+### Video of the implementation:
+Since we had problems with the audio when downloading the Video from github, the video can be found here: [https://drive.google.com/file/d/1EYfDruqt4f0iQRKh0mpLKId-g0daRiWh/view](https://drive.google.com/file/d/1EYfDruqt4f0iQRKh0mpLKId-g0daRiWh/view)
+
 ### Setup
 Figure 1 displays the Setup of our Weather Statistics Application. The two sensors and the Web Interface are running on local machines, and the instance that stores the simulated data and provides it to the Web Interface is running on a Linux (Ubuntu 18) instance provided by AWS. 
 ![Figure 1](https://github.com/harispervaiz/fog_computing2021/blob/main/Setup.png)
