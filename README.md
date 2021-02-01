@@ -10,10 +10,10 @@ The two sensors are simulating temperature values  from two different locations.
 
 ### Transmission of data between cloud and local instances
 Both local sensors emit data every 5 seconds and send it to the virtual node which stores the data and sends back a success message on receive. 
-The node server will start fetching data from the cloud as soon as the user opens the web page. Whenever startet, the node server will continue sending requets to the cloud node every 10s and wait for an answer. The cloud instance will send answers containint data objects as JSON (see [fognode](fognode/index.php)).
+The node server will start fetching data from the cloud as soon as the user opens the web page. Whenever startet, the node server will continue sending requets to the cloud node every 10s and wait for an answer. The cloud instance will send answers containint data objects as JSON (see [fognode](fognode/store.php)).
 
 ### How the nodes keep working when disconnected
-The sensors store the data in their cache and continuously check if the network is online and whether the fog node can be reached. If one test fails, data will be stores in the local cache (see [saveDatLocally](sensors/js/sensor1.js)). 
+The sensors store the data in their cache and continuously check if the network is online and whether the fog node can be reached. If one test fails, data will be stores in the local cache (see [saveDataLocally](sensors/js/sensor1.js)). 
 <br>
 Once both are up, the data will be transferred to the cloud node. Thus data will be stored in the cache, until it can be transmitted successfully (see sendData of sensors). Once the data is sent, the sensors await a response from the server, either a succes is received and displayed, or an alert will be displayed on the frontend. 
 <br><br>
