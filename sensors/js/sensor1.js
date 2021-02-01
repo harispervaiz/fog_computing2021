@@ -17,7 +17,7 @@ function checkInternet(){
         $("#i_status").css("color","red");
         $("#i_status").html("Offline");
         saveDataLocally();
-        sendCachedData();
+        $('#server_response').html('Fail');
     }
 
 }
@@ -44,10 +44,9 @@ function sendData(temperature, datetime, status, name){
         success: function(data) {
             $('#server_response').html(data);
         },
-        error: function(
-
-        ) {
+        error: function(request, status, error) {
             $('#server_response').html('Fail');
+            saveDataLocally();
         }
     }).fail(function () {
         $('#server_response').html('Fail');

@@ -16,8 +16,8 @@ function checkInternet(){
     }else{
         $("#i_status").css("color","red");
         $("#i_status").html("Offline");
+
         saveDataLocally();
-        sendCachedData();
     }
 
 }
@@ -39,19 +39,19 @@ function sendData(temperature, datetime, status, name){
 
     $.ajax({
         type: "POST",
+        timeout: 1000,
         url: 'http://3.125.69.91/fog_computing2021/sensors/update.php',
         data: {temperature: temperature, datetime: datetime, status: status, name: name},
         success: function(data) {
             $('#server_response').html(data);
         },
-        error: function(
-
-        ) {
+        error: function(request, status, error) {
             $('#server_response').html('Fail');
+            saveDataLocally();
         }
     }).fail(function () {
         $('#server_response').html('Fail');
-
+        saveDataLocally();
     });
 }
 
